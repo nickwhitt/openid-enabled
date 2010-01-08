@@ -649,6 +649,8 @@ class Auth_OpenID_GenericConsumer {
      * complete OpenID authentication.
      *
      * @access private
+	 * @author Contributions by Nick Whitt
+	 * @link http://github.com/nickwhitt/openid-enabled.git
      */
     function complete($message, $endpoint, $return_to)
     {
@@ -665,6 +667,7 @@ class Auth_OpenID_GenericConsumer {
         $method = Auth_OpenID::arrayGet($mode_methods, $mode,
                                         '_completeInvalid');
 
+		// return the dynamic class method determined above
 		return $this->$method($message, $endpoint, $return_to);
     }
 

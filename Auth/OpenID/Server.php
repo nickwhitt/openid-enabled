@@ -1531,6 +1531,9 @@ class Auth_OpenID_Decoder {
     /**
      * Given an HTTP query in an array (key-value pairs), decode it
      * into an Auth_OpenID_Request object.
+	 *
+	 * @author Contributions by Nick Whitt
+	 * @link http://github.com/nickwhitt/openid-enabled.git
      */
     function decode($query)
     {
@@ -1568,10 +1571,12 @@ class Auth_OpenID_Decoder {
                                                $mode->message);
         }
 
-        $handler = Auth_OpenID::arrayGet($this->handlers, $mode,
-                                            $this->defaultDecoder($message));
+
+		// create a dynamic class
+		$handler = Auth_OpenID::arrayGet($this->handlers, $mode, $this->defaultDecoder($message));
 		$handlerCls = new $handler;
         if (!is_a($handlerCls, 'Auth_OpenID_ServerError')) {
+			// return the dynamic class method result
             return $handlerCls->fromMessage($message, $this->server);
         } else {
             return $handlerCls;
@@ -1693,10 +1698,14 @@ class Auth_OpenID_Server {
      *
      * @return Auth_OpenID_ServerResponse $response A response object
      * capable of generating a user-agent reply.
+	 *
+	 * @author Contributions by Nick Whitt
+	 * @link http://github.com/nickwhitt/openid-enabled.git
      */
     function handleRequest($request)
     {
         if (method_exists($this, "openid_" . $request->mode)) {
+			// build and return a dynamic class method result
 			$handler = "openid_{$request->mode}";
 			return $this->$handler($request);
         }

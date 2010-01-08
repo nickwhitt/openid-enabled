@@ -361,6 +361,9 @@ function Auth_OpenID_math_extensions()
 
 /**
  * Detect which (if any) math library is available
+ *
+ * @author Contributions by Nick Whitt
+ * @link http://github.com/nickwhitt/openid-enabled.git
  */
 function Auth_OpenID_detectMathLibrary($exts)
 {
@@ -374,6 +377,7 @@ function Auth_OpenID_detectMathLibrary($exts)
         }
 
         // Try to load dynamic modules.
+		// Ensure the dl() function exists, to prevent silent failure
         if (!$loaded && function_exists('dl')) {
             foreach ($extension['modules'] as $module) {
                 if (@dl($module . "." . PHP_SHLIB_SUFFIX)) {
