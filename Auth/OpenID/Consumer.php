@@ -665,8 +665,7 @@ class Auth_OpenID_GenericConsumer {
         $method = Auth_OpenID::arrayGet($mode_methods, $mode,
                                         '_completeInvalid');
 
-        return call_user_func_array(array(&$this, $method),
-                                    array($message, $endpoint, $return_to));
+		return $this->$method($message, $endpoint, $return_to);
     }
 
     /**
