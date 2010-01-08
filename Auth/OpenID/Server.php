@@ -1568,12 +1568,11 @@ class Auth_OpenID_Decoder {
                                                $mode->message);
         }
 
-        $handlerCls = Auth_OpenID::arrayGet($this->handlers, $mode,
+        $handler = Auth_OpenID::arrayGet($this->handlers, $mode,
                                             $this->defaultDecoder($message));
-
+		$handlerCls = new $handler;
         if (!is_a($handlerCls, 'Auth_OpenID_ServerError')) {
-            return call_user_func_array(array($handlerCls, 'fromMessage'),
-                                        array($message, $this->server));
+            return $handlerCls->fromMessage($message, $this->server);
         } else {
             return $handlerCls;
         }
